@@ -39,6 +39,7 @@ public class Palettes {
         GameRegistry.registerTileEntity(TilePalette.class, "palette");
 
         GameRegistry.addShapedRecipe(new ItemStack(palette, 8), "sws", "wpw", "sws", 's', Items.stick, 'w', new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), 'p', Items.painting);
+        GameRegistry.addShapedRecipe(new ItemStack(paletteEditor), "wdw", "wsw", "bbb", 's', Items.stick, 'w', new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), 'd', new ItemStack(Items.dye, 1, OreDictionary.WILDCARD_VALUE), 'b', Blocks.stone);
 
         proxy.initRenderers();
         proxy.initEventHook();
