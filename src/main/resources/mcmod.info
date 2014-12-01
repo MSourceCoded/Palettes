@@ -1,0 +1,16 @@
+[
+{
+  "modid": "palettes",
+  "name": "Palettes",
+  "description": "A mod that allows you to make a block with any texture",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["SourceCoded"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
