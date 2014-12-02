@@ -9,6 +9,7 @@ import sourcecoded.palettes.core.client.CachedPalettes;
 import sourcecoded.palettes.core.client.CompiledPalette;
 import sourcecoded.palettes.core.client.gui.element.GuiRGBSliders;
 import sourcecoded.palettes.core.common.SavedPalettes;
+import sourcecoded.palettes.lib.ColourUtils;
 import sourcecoded.palettes.lib.network.NetworkHandler;
 import sourcecoded.palettes.lib.network.message.MessageSaveImage;
 
@@ -29,6 +30,10 @@ public class GuiPaletteDraw extends GuiScreen {
 
     public static final int SAVE_BUTTON = 1;
     public static final int LOAD_BUTTON = 2;
+    public static final int INCREASE_DIMENSION_BUTTON = 3;
+    public static final int DECREASE_DIMENSION_BUTTON = 4;
+
+    int dimension = 16;
 
     @SuppressWarnings("unchecked")
     public void initGui() {
@@ -40,7 +45,7 @@ public class GuiPaletteDraw extends GuiScreen {
         int padding = 20;
         squareDimension = maxSpace - 2 * padding;
 
-        subsection = squareDimension / 16;
+        subsection = squareDimension / dimension;
 
         sliders[0] = new GuiRGBSliders(100, width - 85, height / 2, 75, 10, 0);
         sliders[1] = new GuiRGBSliders(101, width - 85, height / 2 + 15, 75, 10, 1);
@@ -52,12 +57,14 @@ public class GuiPaletteDraw extends GuiScreen {
 
         this.buttonList.add(new GuiButton(SAVE_BUTTON, width / 2 + nameWidth / 2 + 2, height - 23, 50, 20, "Save"));
         this.buttonList.add(new GuiButton(LOAD_BUTTON, width / 2 - nameWidth / 2 - 52, height - 23, 50, 20, "Load"));
+        this.buttonList.add(new GuiButton(DECREASE_DIMENSION_BUTTON, width - 87, height / 2 + 45, 15, 20, "<"));
+        this.buttonList.add(new GuiButton(INCREASE_DIMENSION_BUTTON, width - 22, height / 2 + 45, 15, 20, ">"));
     }
 
     public void setColor(float[] rgb) {
-        sliders[0].setValue(sliders[0].maxValue * (double)rgb[0]);
-        sliders[1].setValue(sliders[0].maxValue * (double)rgb[1]);
-        sliders[2].setValue(sliders[0].maxValue * (double)rgb[2]);
+        sliders[0].setValue(sliders[0].maxValue * (double) rgb[0]);
+        sliders[1].setValue(sliders[0].maxValue * (double) rgb[1]);
+        sliders[2].setValue(sliders[0].maxValue * (double) rgb[2]);
     }
 
     protected void actionPerformed(GuiButton button) {
@@ -65,7 +72,29 @@ public class GuiPaletteDraw extends GuiScreen {
             NetworkHandler.wrapper.sendToServer(new MessageSaveImage(convertToImage(), nameField.getText()));
         } else if (button.id == LOAD_BUTTON) {
             this.mc.displayGuiScreen(new GuiPaletteLoad(this));
+        } else if (button.id == INCREASE_DIMENSION_BUTTON) {
+            int val = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? 16 : 1;
+            dimension = Math.min(64, dimension + val);
+            reloadCanvas();
+        } else if (button.id == DECREASE_DIMENSION_BUTTON) {
+            int val = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? 16 : 1;
+            dimension = Math.max(1, dimension - val);
+            reloadCanvas();
         }
+    }
+
+    public void reloadCanvas() {
+        PaletteBlock[][] oldBlocks = blocks;
+        blocks = new PaletteBlock[dimension][dimension];
+
+        int itMax = Math.min(oldBlocks.length, blocks.length);
+        for (int x = 0; x < itMax; x++) {
+            for (int y = 0; y < itMax; y++) {
+                blocks[x][y] = oldBlocks[x][y];
+            }
+        }
+
+        subsection = squareDimension / dimension;
     }
 
     public void loadServer() {
@@ -126,14 +155,15 @@ public class GuiPaletteDraw extends GuiScreen {
                 block.draw(mx, my, ptt, currentColor);
             }
         }
-
         glEnable(GL_TEXTURE_2D);
+
+        drawCenteredString(fontRendererObj, dimension + "x" + dimension, width - 47, height / 2 + 51, ColourUtils.rgbToInt_F(0.6F, 0.6F, 0.6F));
 
         super.drawScreen(mx, my, ptt);
     }
 
     public BufferedImage convertToImage() {
-        BufferedImage image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(dimension, dimension, BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < blocks.length; x++) {
             for (int y = 0; y < blocks[x].length; y++) {
                 image.setRGB(x, y, blocks[x][y].getColor());
