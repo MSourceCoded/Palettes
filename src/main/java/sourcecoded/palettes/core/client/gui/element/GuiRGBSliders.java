@@ -9,8 +9,8 @@ public class GuiRGBSliders extends GuiSlider {
 
     int type = 0;
 
-    public GuiRGBSliders(int id, int xPos, int yPos, int width, int height, int type) {
-        super(id, xPos, yPos, width, height, "", "", 0, 256 * 6 - 5, 0, false, false);
+    public GuiRGBSliders(int id, int xPos, int yPos, int width, int height, int type, ISlider parent) {
+        super(id, xPos, yPos, width, height, "", "", 0, 256 * 6 - 5, 0, false, false, parent);
         this.type = type;
     }
 

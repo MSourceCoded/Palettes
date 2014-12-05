@@ -17,6 +17,7 @@ public class GuiPaletteLoad extends GuiScreen {
     public void initGui() {
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + 30, 90, 20, "Client"));
         this.buttonList.add(new GuiButton(1, this.width / 2 + 10, this.height / 2 + 30, 90, 20, "Server"));
+        this.buttonList.add(new GuiButton(2, this.width / 2 - 50, this.height / 2 + 55, 90, 20, "Held Item"));
     }
 
     public void keyTyped(char letter, int keyCode) {
@@ -28,11 +29,16 @@ public class GuiPaletteLoad extends GuiScreen {
     protected void actionPerformed(GuiButton button) {
         if (button.id == 0) {
             parentGUI.loadClient();
-            this.mc.displayGuiScreen(parentGUI);
         } else if (button.id == 1) {
             parentGUI.loadServer();
-            this.mc.displayGuiScreen(parentGUI);
+        } else if (button.id == 2) {
+            try {
+                parentGUI.loadItem();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        this.mc.displayGuiScreen(parentGUI);
     }
 
     public void drawScreen(int mx, int my, float ptt) {

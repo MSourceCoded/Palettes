@@ -28,7 +28,7 @@ public class PaletteBlock {
         return pixelData;
     }
 
-    public void draw(int mx, int my, float ptt, float[] color) {
+    public void draw(int mx, int my, float ptt, float[] color, boolean click) {
         float[] rgb = ColourUtils.intToRGB_F(pixelData);
 
         float xStart = parent.width / 2 + (parent.subsection * x) - (parent.squareDimension / 2);
@@ -36,7 +36,7 @@ public class PaletteBlock {
 
         boolean changed = false;
 
-        if (mx > xStart && mx < xStart + parent.subsection && my > yStart && my < yStart + parent.subsection) {
+        if (click && mx > xStart && mx < xStart + parent.subsection && my > yStart && my < yStart + parent.subsection) {
             if (Mouse.isButtonDown(0)) {
                 rgb = color;
                 changed = true;
@@ -62,7 +62,11 @@ public class PaletteBlock {
         tess.draw();
 
         if (changed)
-            pixelData = ColourUtils.rgbToInt_F(rgb[0], rgb[1], rgb[2]);
+            fill(ColourUtils.rgbToInt_F(rgb[0], rgb[1], rgb[2]));
+    }
+
+    void fill(int rgb) {
+        this.pixelData = rgb;
     }
 
 }
