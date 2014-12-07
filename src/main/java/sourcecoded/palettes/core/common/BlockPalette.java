@@ -9,11 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import sourcecoded.palettes.lib.PalettesConstants;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class BlockPalette extends Block implements ITileEntityProvider {
@@ -28,6 +28,18 @@ public class BlockPalette extends Block implements ITileEntityProvider {
 
     public int getRenderType() {
         return -1;
+    }
+
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+        return true;
     }
 
     @Override
