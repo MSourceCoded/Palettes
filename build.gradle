@@ -24,7 +24,7 @@ forgeDetails.withReader {
 	project.ext.forgeProps = new ConfigSlurper().parse prop
 }
 
-version = "1.7.10-0.0.1"
+version = "1.7.10-0.0.2"
 group= "sourcecoded.palettes"
 archivesBaseName = "palettes"
 
