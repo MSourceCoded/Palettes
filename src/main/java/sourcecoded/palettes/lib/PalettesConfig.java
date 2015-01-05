@@ -67,7 +67,6 @@ public class PalettesConfig {
     }
 
     public static enum Categories {
-        VERSION("version", "Version Checker"),
         ;
 
         private String categoryName, comment;
@@ -91,9 +90,6 @@ public class PalettesConfig {
     }
 
     public static enum Properties {
-        VERS_AUTO(Categories.VERSION, "vers_auto", "Should new Versions of this mod automatically update?", true),
-        VERS_SILENT(Categories.VERSION, "vers_silent", "Should this mod not send chat messages for updates?", false),
-        VERS_ON(Categories.VERSION, "vers_enabled", "Should this mod use a version checker?", true),
         ;
 
         String category, propertyName, comment;

@@ -10,10 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import sourcecoded.core.Constants;
-import sourcecoded.core.SourceCodedCore;
 import sourcecoded.core.configuration.VersionConfig;
-import sourcecoded.core.version.VersionChecker;
 import sourcecoded.palettes.core.common.BlockPalette;
 import sourcecoded.palettes.core.common.BlockPaletteEditor;
 import sourcecoded.palettes.core.common.TilePalette;
@@ -39,11 +36,9 @@ public class Palettes {
     @Mod.Instance(MODID)
     public static Palettes instance;
 
-    public static VersionChecker checker;
-
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) throws IOException {
-        PalettesConfig.init(VersionConfig.createNewVersionConfig(event.getSuggestedConfigurationFile(), "0.1", PalettesConstants.MODID));
+        PalettesConfig.init(VersionConfig.createNewVersionConfig(event.getSuggestedConfigurationFile(), "0.2", PalettesConstants.MODID));
     }
 
     @EventHandler
@@ -62,12 +57,6 @@ public class Palettes {
 
         PaletteFileHandler.init();
         NetworkHandler.initNetwork();
-
-        if (PalettesConfig.getBoolean(PalettesConfig.Properties.VERS_ON))
-            checker = new VersionChecker(Constants.MODID, "https://raw.githubusercontent.com/MSourceCoded/Palettes/master/version/{MC}.txt", Constants.VERSION, PalettesConfig.getBoolean(PalettesConfig.Properties.VERS_AUTO), PalettesConfig.getBoolean(PalettesConfig.Properties.VERS_SILENT));
-
-        if (!SourceCodedCore.isDevEnv)
-            checker.check();
     }
 
 }
